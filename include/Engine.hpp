@@ -45,11 +45,6 @@ public:
     int getStep();
 
     /**
-    * @brief Return the Engine STEP pin.
-    */
-    int getStep();
-
-    /**
     * @brief Reverse the engine target.
     */
     void reverseTarget();

@@ -53,8 +53,9 @@ public:
 
     /**
     * @brief Spin the Engines on mEnginesToPlay.
+    * @param pCalledByFromRunThrough If true the function was called by the function runThrough.
     */
-    void playMany(); // roda o motor antes adicionado
+    void playMany(bool pCalledByRunThrough); // roda o motor antes adicionado
 
     /**
     * @brief Play a music.

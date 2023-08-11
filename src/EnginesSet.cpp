@@ -35,8 +35,12 @@ void EnginesSet::addToenginesToPlay(std::string pGuitarStrings)
   }
 }
 
-void EnginesSet::playMany()
+void EnginesSet::playMany(bool pCalledByRunThrough)
 {
+  int delay = 1000;
+  if(pCalledByRunThrough){
+    delay = 100;
+  }
   //Serial.println("Entrou no playmany!");
   for (int i = 0; i < mEnginesToPlay.size(); i++) {
     if (mEnginesToPlay[i]->getTarget() > 0) {
@@ -51,7 +55,7 @@ void EnginesSet::playMany()
     for (int i = 0; i < mEnginesToPlay.size(); i++) {
       digitalWrite(mEnginesToPlay[i]->getStep(), LOW);
     }
-    delayMicroseconds(1000);
+    delayMicroseconds(delay);
 
     for (int i = 0; i < mEnginesToPlay.size(); i++) {
       digitalWrite(mEnginesToPlay[i]->getStep(), HIGH);
@@ -64,7 +68,7 @@ void EnginesSet::playMany()
       }
 
     }
-    delayMicroseconds(1000);
+    delayMicroseconds(delay);
   }
 
   for (int i = 0; i < mEnginesToPlay.size(); i++)
@@ -105,7 +109,7 @@ void EnginesSet::parseFile(std::string pStream, int pTune)
         this->addToenginesToPlay(subStream);
         //Serial.println("Cordas do pulso:");
         //Serial.println(subStream.c_str());
-        this->playMany();
+        this->playMany(false);
         subStream = "";
       }
       if (pTune == 0) {
@@ -131,7 +135,7 @@ void EnginesSet::runThrough(mDirection pDirection)
     {
       this->mEnginesToPlay.push_back(*it);
       delay(100);
-      this->playMany();
+      this->playMany(true);
     }
   }
   else
@@ -141,7 +145,7 @@ void EnginesSet::runThrough(mDirection pDirection)
     {
       this->mEnginesToPlay.push_back(*it);
       delay(100);
-      this->playMany();
+      this->playMany(true);
     }
   }
 }
