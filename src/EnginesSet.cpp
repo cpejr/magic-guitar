@@ -90,25 +90,11 @@ void EnginesSet::parseFile(std::string pStream, int pTune)
     {
       if (pStream[forControl - 1] == 'd')
       {
-        std::string runThroughGuitarStrings; //Cordas que entrarão no runThrough
-        int forControlGuitarStrings = 1;
-        while(pStream[forControl + forControlGuitarStrings] != ')')
-        {
-          runThroughGuitarStrings.push_back(pStream[forControl + forControlGuitarStrings]);
-          forControlGuitarStrings++;
-        }
-        runThrough(DOWN, runThroughGuitarStrings);
+        runThrough(DOWN, "EADGBe");
       }
       else if (pStream[forControl - 1] == 's')
       {
-        std::string runThroughGuitarStrings; //Cordas que entrarão no runThrough
-        int forControlGuitarStrings = 1;
-        while(pStream[forControl + forControlGuitarStrings] != ')')
-        {
-          runThroughGuitarStrings.push_back(pStream[forControl + forControlGuitarStrings]);
-          forControlGuitarStrings++;
-        }
-        runThrough(UP, runThroughGuitarStrings);
+        runThrough(UP, "EADGBe");
       }
       else if (pStream[forControl - 1] != ' ')
       {
@@ -131,6 +117,31 @@ void EnginesSet::parseFile(std::string pStream, int pTune)
         delay(100);
       }
       strControl = forControl + 1;
+    }else{ 
+      if(guitarString == '(')
+      {
+        if (pStream[forControl - 1] == 'd')
+        {
+          std::string runThroughGuitarStrings; //Cordas que entrarão no runThrough
+          while(pStream[forControl + 1] != ')')
+          {
+            runThroughGuitarStrings.push_back(pStream[forControl + 1]);
+            forControl++;
+          }
+          runThrough(DOWN, runThroughGuitarStrings);
+        }
+        else if (pStream[forControl - 1] == 's')
+        {
+          forControl++;
+          std::string runThroughGuitarStrings; //Cordas que entrarão no runThrough
+          while(pStream[forControl + 1] != ')')
+          {
+            runThroughGuitarStrings.push_back(pStream[forControl + 1]);
+            forControl++;
+          }
+          runThrough(UP, runThroughGuitarStrings);
+        }
+      }
     }
   }
 }
