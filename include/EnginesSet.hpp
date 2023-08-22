@@ -53,9 +53,8 @@ public:
 
     /**
     * @brief Spin the Engines on mEnginesToPlay.
-    * @param pCalledByFromRunThrough If true the function was called by the function runThrough.
     */
-    void playMany(bool pCalledByRunThrough); // roda o motor antes adicionado
+    void playMany(); // roda o motor antes adicionado
 
     /**
     * @brief Play a music.
@@ -67,8 +66,9 @@ public:
     /**
     * @brief Set all the Engines up or down.
     * @param pDirection Engine current direction.
+    * @param pGuitarStrings Guitar strings that will be played.
     */
-    void runThrough(mDirection pDirection); // faz subida ou descida em todos os motores
+    void runThrough(mDirection pDirection, std::string pGuitarStrings); // faz subida ou descida em todos os motores
 
     void tune(int pTunePosition);
 
