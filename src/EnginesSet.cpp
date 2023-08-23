@@ -196,12 +196,12 @@ void EnginesSet::tune(int pTunePosition)
       }
     case 3:
       {
-        parseFile("B ", 1);
+        parseFile("G ", 1);
         break;
       }
     case 4:
       {
-        parseFile("G ", 1);
+        parseFile("B ", 1);
         break;
       }
     case 5:
