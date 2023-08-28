@@ -2,7 +2,7 @@
 
 EnginesSet::EnginesSet()
 {
-  mGlobalTargets = 16;
+  mGlobalTargets = 12;
   //   mExitLoop = 0;
   //   mButtonUpState = digitalRead(buttonUp);
   //   mButtonSelectState = digitalRead(buttonSelect);
@@ -51,7 +51,7 @@ void EnginesSet::playMany()
     for (int i = 0; i < mEnginesToPlay.size(); i++) {
       digitalWrite(mEnginesToPlay[i]->getStep(), LOW);
     }
-    delayMicroseconds(1000);
+    delayMicroseconds(1500);
 
     for (int i = 0; i < mEnginesToPlay.size(); i++) {
       digitalWrite(mEnginesToPlay[i]->getStep(), HIGH);
@@ -64,7 +64,7 @@ void EnginesSet::playMany()
       }
 
     }
-    delayMicroseconds(1000);
+    delayMicroseconds(1500);
   }
 
   for (int i = 0; i < mEnginesToPlay.size(); i++)
@@ -91,10 +91,11 @@ void EnginesSet::parseFile(std::string pStream, int pTune)
       if (pStream[forControl - 1] == 's' || pStream[forControl - 1] == 'd')
       {
         int forControlSandD = forControl - 1;
-        while(pStream[forControlSandD] != ' '){ //Retorna até o início da sequência de s e/ou d
+        while(pStream[forControlSandD] != ' '){ //Retorna até espaço antes do início da sequência de s e/ou d
           forControlSandD--;
         }
-        for(forControlSandD; pStream[forControlSandD] != ' '; forControlSandD--){
+        forControlSandD++; //Vai até o início da sequência de s e/ou d
+        for(forControlSandD; pStream[forControlSandD] != ' '; forControlSandD++){
           if(pStream[forControlSandD] == 's'){
             runThrough(UP, "EADGBe");
           } else if(pStream[forControlSandD] == 'd'){
@@ -116,32 +117,30 @@ void EnginesSet::parseFile(std::string pStream, int pTune)
         delay(mDelayMilis);
         delayMicroseconds(mDelayMicro);
       } else {
-        delay(2000); //DELAY AJUSTADO PARA IGUALAR SILÊNCIO AO TEMPO DE UMA SUBIDA/DESCIDA
+        delay(100);
+        delayMicroseconds(1906); //DELAY AJUSTADO PARA IGUALAR SILÊNCIO AO TEMPO DE UMA SUBIDA/DESCIDA
       }
       strControl = forControl + 1;
     } else { 
       if(guitarString == '(')
-      {
-        if (pStream[forControl - 1] == 'd')
-        {
-          std::string runThroughGuitarStrings; //Cordas que entrarão no runThrough
+      { 
+        int forControlSandD = forControl;
+        std::string runThroughGuitarStrings; //Cordas que entrarão no runThrough
           while(pStream[forControl + 1] != ')')
           {
             runThroughGuitarStrings.push_back(pStream[forControl + 1]);
             forControl++;
           }
-          runThrough(DOWN, runThroughGuitarStrings);
+        while(pStream[forControlSandD] != ' '){ //Retorna até espaço antes do início da sequência de s e/ou d
+          forControlSandD--;
         }
-        else if (pStream[forControl - 1] == 's')
-        {
-          forControl++;
-          std::string runThroughGuitarStrings; //Cordas que entrarão no runThrough
-          while(pStream[forControl + 1] != ')')
-          {
-            runThroughGuitarStrings.push_back(pStream[forControl + 1]);
-            forControl++;
+        forControlSandD++; //Vai até o início da sequência de s e/ou d
+        for(forControlSandD; pStream[forControlSandD] != '('; forControlSandD++){
+          if(pStream[forControlSandD] == 's'){
+            runThrough(UP, runThroughGuitarStrings);
+          } else if(pStream[forControlSandD] == 'd'){
+            runThrough(DOWN, runThroughGuitarStrings);
           }
-          runThrough(UP, runThroughGuitarStrings);
         }
       }
     }
