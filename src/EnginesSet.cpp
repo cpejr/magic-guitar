@@ -88,18 +88,21 @@ void EnginesSet::parseFile(std::string pStream, int pTune)
     guitarString = pStream[forControl];
     if (guitarString == ' ')
     {
-      if (pStream[forControl - 1] == 'd')
+      if (pStream[forControl - 1] == 's' || pStream[forControl - 1] == 'd')
       {
-        runThrough(DOWN, "EADGBe");
-      }
-      else if (pStream[forControl - 1] == 's')
-      {
-        runThrough(UP, "EADGBe");
-      }
-      else if (pStream[forControl - 1] != ' ')
-      {
-        for (strControl; strControl < forControl; strControl++)
-        {
+        int forControlSandD = forControl - 1;
+        while(pStream[forControlSandD] != ' '){ //Retorna até o início da sequência de s e/ou d
+          forControlSandD--;
+        }
+        for(forControlSandD; pStream[forControlSandD] != ' '; forControlSandD--){
+          if(pStream[forControlSandD] == 's'){
+            runThrough(UP, "EADGBe");
+          } else if(pStream[forControlSandD] == 'd'){
+            runThrough(DOWN, "EADGBe");
+          }
+        }
+      } else if (pStream[forControl - 1] != ' '){
+        for (strControl; strControl < forControl; strControl++){
           subStream = subStream + pStream[strControl];
         }
         this->addToenginesToPlay(subStream);
@@ -112,12 +115,11 @@ void EnginesSet::parseFile(std::string pStream, int pTune)
         //delay(setDelay());
         delay(mDelayMilis);
         delayMicroseconds(mDelayMicro);
-      }
-      else {
-        delay(100);
+      } else {
+        delay(2000); //DELAY AJUSTADO PARA IGUALAR SILÊNCIO AO TEMPO DE UMA SUBIDA/DESCIDA
       }
       strControl = forControl + 1;
-    }else{ 
+    } else { 
       if(guitarString == '(')
       {
         if (pStream[forControl - 1] == 'd')
