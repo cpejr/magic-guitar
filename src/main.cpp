@@ -26,9 +26,9 @@ int j;
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 int delayButtons = 250;
-#define buttonUp 35
-#define buttonSelect 16
-#define buttonDown 17
+#define buttonUp 16
+#define buttonSelect 17
+#define buttonDown 35
 
 int exitLoop = 0;
 
@@ -1006,11 +1006,11 @@ void setup()
   //Serial.begin(115200);
 
   //                    step, dir)
-  guitar.insertMotor('E', 13, 12);
-  guitar.insertMotor('A', 14, 27); 
-  guitar.insertMotor('D', 26, 25);
-  guitar.insertMotor('G', 3 , 21);
-  guitar.insertMotor('B', 33, 32);
+  guitar.insertMotor('E', 3, 21);
+  guitar.insertMotor('A', 26, 25); 
+  guitar.insertMotor('D', 13, 12);
+  guitar.insertMotor('G', 33 , 32);
+  guitar.insertMotor('B', 14, 27);
   guitar.insertMotor('e', 22, 1 );
 
 
