@@ -26,9 +26,9 @@ int j;
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 int delayButtons = 250;
-#define buttonUp 35
-#define buttonSelect 16
-#define buttonDown 17
+#define buttonUp 16
+#define buttonSelect 17
+#define buttonDown 35
 
 int exitLoop = 0;
 
@@ -1012,6 +1012,14 @@ void setup()
   guitar.insertMotor('G', 3 , 21);
   guitar.insertMotor('B', 33, 32);
   guitar.insertMotor('e', 22, 1 );
+
+  //G
+  //D
+  //E
+  //
+  //
+  //A
+  //e
 
 
   pinMode(buttonUp, INPUT_PULLUP);
