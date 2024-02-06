@@ -1006,20 +1006,12 @@ void setup()
   //Serial.begin(115200);
 
   //                    step, dir)
-  guitar.insertMotor('E', 13, 12);
-  guitar.insertMotor('A', 14, 27); 
-  guitar.insertMotor('D', 26, 25);
-  guitar.insertMotor('G', 3 , 21);
-  guitar.insertMotor('B', 33, 32);
+  guitar.insertMotor('E', 3, 21);
+  guitar.insertMotor('A', 26, 25); 
+  guitar.insertMotor('D', 13, 12);
+  guitar.insertMotor('G', 33 , 32);
+  guitar.insertMotor('B', 14, 27);
   guitar.insertMotor('e', 22, 1 );
-
-  //G
-  //D
-  //E
-  //
-  //
-  //A
-  //e
 
 
   pinMode(buttonUp, INPUT_PULLUP);
