@@ -1,8 +1,11 @@
 #include "EnginesSet.hpp"
 
+#define DELAY_SPEED 1800
+#define STEP_NUMBER 13
+
 EnginesSet::EnginesSet()
 {
-  mGlobalTargets = 12;
+  mGlobalTargets = STEP_NUMBER;
   //   mExitLoop = 0;
   //   mButtonUpState = digitalRead(buttonUp);
   //   mButtonSelectState = digitalRead(buttonSelect);
@@ -51,7 +54,7 @@ void EnginesSet::playMany()
     for (int i = 0; i < mEnginesToPlay.size(); i++) {
       digitalWrite(mEnginesToPlay[i]->getStep(), LOW);
     }
-    delayMicroseconds(1500);
+    //delayMicroseconds(DELAY_SPEED);
 
     for (int i = 0; i < mEnginesToPlay.size(); i++) {
       digitalWrite(mEnginesToPlay[i]->getStep(), HIGH);
@@ -64,7 +67,7 @@ void EnginesSet::playMany()
       }
 
     }
-    delayMicroseconds(1500);
+    delayMicroseconds(DELAY_SPEED);
   }
 
   for (int i = 0; i < mEnginesToPlay.size(); i++)
