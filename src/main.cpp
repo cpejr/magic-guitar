@@ -6,6 +6,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_ST7735.h>
+#include <esp_ipc.h>
 
 #include "SDCard.hpp"
 #include "Engine.hpp"
@@ -59,9 +60,10 @@ string defStroke = "";
 void taskStroke(void *parameter)
 {
   readingButtons();
+  guitar.setLastMillis();
   guitar.parseFile(defStroke,0);
   lastStroke = 0;
-  vTaskDelete(NULL);
+  // vTaskDelete(NULL);
 }
 
 void settings(int *targetScreen)
@@ -155,7 +157,11 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       if (lastStroke == 0)
       {
         lastStroke = 1;
-        xTaskCreatePinnedToCore(taskStroke, "taskStroke", 1000, NULL, 1, NULL, 0);
+        // xTaskCreatePinnedToCore(taskStroke, "taskStroke", 1000, NULL, 1, NULL, 0);
+        
+        // taskStroke(NULL);
+        
+        esp_ipc_call(PRO_CPU_NUM, taskStroke, NULL);
       }
     }
     if (playingPos == 2)
@@ -175,7 +181,11 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       if (lastStroke == 0)
       {
         lastStroke = 1;
-        xTaskCreatePinnedToCore(taskStroke, "taskStroke", 1000, NULL, 1, NULL, 0);
+        // xTaskCreatePinnedToCore(taskStroke, "taskStroke", 1000, NULL, 1, NULL, 0);
+        
+        // taskStroke(NULL);
+
+        esp_ipc_call(PRO_CPU_NUM, taskStroke, NULL);
       }
     }
     if (playingPos == 3)
@@ -196,7 +206,11 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       if (lastStroke == 0)
       {
         lastStroke = 1;
-        xTaskCreatePinnedToCore(taskStroke, "taskStroke", 1000, NULL, 1, NULL, 0);
+        // xTaskCreatePinnedToCore(taskStroke, "taskStroke", 1000, NULL, 1, NULL, 0);
+
+        // taskStroke(NULL);
+
+        esp_ipc_call(PRO_CPU_NUM, taskStroke, NULL);
       }
     }
 

@@ -1,7 +1,5 @@
 #include "EnginesSet.hpp"
-
-#define DELAY_SPEED 1800
-#define STEP_NUMBER 13
+#include "Arduino.h"
 
 EnginesSet::EnginesSet()
 {
@@ -117,8 +115,10 @@ void EnginesSet::parseFile(std::string pStream, int pTune)
       }
       if (pTune == 0) {
         //delay(setDelay());
-        delay(mDelayMilis);
+        uint32_t elapsedMillis = millis() - mLastMillis;
+        delay(mDelayMillis - elapsedMillis);
         delayMicroseconds(mDelayMicro);
+        mLastMillis = millis();
       } else {
         delay(100);
         delayMicroseconds(1906); //DELAY AJUSTADO PARA IGUALAR SILÊNCIO AO TEMPO DE UMA SUBIDA/DESCIDA
@@ -160,7 +160,7 @@ void EnginesSet::runThrough(mDirection pDirection, std::string pGuitarStrings)
     {
       if(pGuitarStrings.find((*it)->getGuitarString()) != std::string::npos){
         this->mEnginesToPlay.push_back(*it);
-        delay(1);
+        delayMicroseconds(500);
         this->playMany();
       }
     }
@@ -172,7 +172,7 @@ void EnginesSet::runThrough(mDirection pDirection, std::string pGuitarStrings)
     {
       if(pGuitarStrings.find((*it)->getGuitarString()) != std::string::npos){
         this->mEnginesToPlay.push_back(*it);
-        delay(1);
+        delay(500);
         this->playMany();
       }
     }
@@ -324,8 +324,8 @@ void EnginesSet::setSubdivision(SDCard pSd)
 void EnginesSet::setDelay()
 {
   float pDelay;  //em milisegundos
-  int inteiro;
-  int tresDigitos;
+  uint32_t inteiro;
+  uint32_t tresDigitos;
 
   if(mSubdivision == "seminima "){
     pDelay = (59/mBPMSpeed) * (1) * 1000;
@@ -356,14 +356,14 @@ void EnginesSet::setDelay()
   // Serial.println(mBPMSpeed);
   // Serial.println("Sub: ");
   // Serial.println(mSubdivision.c_str());
-  // Serial.println("Delay: ");
-  Serial.println(pDelay);
+  // Serial.print("Delay: ");
+  // Serial.println(pDelay);
 
-  pDelay = pDelay - 35.8;
-  inteiro = (int)pDelay;
-  tresDigitos = (pDelay - inteiro)*1000;
+  // pDelay = pDelay - 17;
+  inteiro = (uint32_t)pDelay;
+  tresDigitos = (uint32_t)((pDelay - inteiro)*1000);
 
-  mDelayMilis = inteiro;
+  mDelayMillis = inteiro;
   mDelayMicro = tresDigitos;
 
   // Serial.println("Parte inteira: ");
@@ -377,6 +377,11 @@ void EnginesSet::setDelay()
   // if(tresDigitos != 0) {
   //   delayMicroseconds(tresDigitos);
   // }
+}
+
+void EnginesSet::setLastMillis()
+{
+  mLastMillis = millis();
 }
 
 void EnginesSet::setCurrentTarget(String pcurrentTargets)
