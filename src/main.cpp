@@ -60,7 +60,6 @@ string defStroke = "";
 void taskStroke(void *parameter)
 {
   readingButtons();
-  guitar.setLastMillis();
   guitar.parseFile(defStroke,0);
   lastStroke = 0;
   // vTaskDelete(NULL);
@@ -139,6 +138,7 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
   guitar.setDelay();
   while (returnPlaying == 0)
   {
+    if (lastStroke == 0) guitar.setLastMillis();
     readingButtons();
     if (playingPos == 1)
     {
