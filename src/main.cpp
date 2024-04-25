@@ -65,6 +65,26 @@ void taskStroke(void *parameter)
   // vTaskDelete(NULL);
 }
 
+bool breakLoopFlag = false;
+
+/**
+ * @brief Loop that runs on another core and plays the song
+ */
+void songLoop(void* parameter)
+{
+  guitar.setLastMillis();
+  while(1)
+  {
+    guitar.parseFile(defStroke, 0);  
+
+    readingButtons();
+    if (breakLoopFlag) break;
+  }
+
+  lastStroke = 0;
+  vTaskDelete(NULL);
+}
+
 void settings(int *targetScreen)
 {
   tft.fillScreen(ST7735_BLACK);
@@ -138,7 +158,6 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
   guitar.setDelay();
   while (returnPlaying == 0)
   {
-    if (lastStroke == 0) guitar.setLastMillis();
     readingButtons();
     if (playingPos == 1)
     {
@@ -157,11 +176,12 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       if (lastStroke == 0)
       {
         lastStroke = 1;
-        // xTaskCreatePinnedToCore(taskStroke, "taskStroke", 1000, NULL, 1, NULL, 0);
+        breakLoopFlag = false;
+        xTaskCreatePinnedToCore(songLoop, "taskStroke", 1000, NULL, 1, NULL, 0);
         
         // taskStroke(NULL);
         
-        esp_ipc_call(PRO_CPU_NUM, taskStroke, NULL);
+        // esp_ipc_call(PRO_CPU_NUM, taskStroke, NULL);
       }
     }
     if (playingPos == 2)
@@ -181,11 +201,12 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       if (lastStroke == 0)
       {
         lastStroke = 1;
-        // xTaskCreatePinnedToCore(taskStroke, "taskStroke", 1000, NULL, 1, NULL, 0);
+        breakLoopFlag = false;
+        xTaskCreatePinnedToCore(songLoop, "taskStroke", 1000, NULL, 1, NULL, 0);
         
         // taskStroke(NULL);
 
-        esp_ipc_call(PRO_CPU_NUM, taskStroke, NULL);
+        // esp_ipc_call(PRO_CPU_NUM, taskStroke, NULL);
       }
     }
     if (playingPos == 3)
@@ -206,11 +227,12 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       if (lastStroke == 0)
       {
         lastStroke = 1;
-        // xTaskCreatePinnedToCore(taskStroke, "taskStroke", 1000, NULL, 1, NULL, 0);
+        breakLoopFlag = false;
+        xTaskCreatePinnedToCore(songLoop, "taskStroke", 1000, NULL, 1, NULL, 0);
 
         // taskStroke(NULL);
-
-        esp_ipc_call(PRO_CPU_NUM, taskStroke, NULL);
+        
+        // esp_ipc_call(PRO_CPU_NUM, taskStroke, NULL);
       }
     }
 
@@ -294,6 +316,8 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
     }
     if (buttonSelectState == 0)
     {
+      breakLoopFlag = true;
+
       returnPlaying = 1;
       delay(delayButtons);
     }
