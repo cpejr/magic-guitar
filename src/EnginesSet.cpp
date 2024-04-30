@@ -172,7 +172,7 @@ void EnginesSet::runThrough(mDirection pDirection, std::string pGuitarStrings)
     {
       if(pGuitarStrings.find((*it)->getGuitarString()) != std::string::npos){
         this->mEnginesToPlay.push_back(*it);
-        delay(500);
+        delayMicroseconds(500);
         this->playMany();
       }
     }
