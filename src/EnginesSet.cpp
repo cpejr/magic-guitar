@@ -10,6 +10,11 @@ EnginesSet::EnginesSet()
   //   mButtonDownState = digitalRead(buttonDown);
 }
 
+EnginesSet::~EnginesSet()
+{
+  for (auto engine : mEnginesToPlay) delete engine;
+}
+
 void EnginesSet::insertMotor(char pGuitarString, int pStep, int pDir)
 {
   Engine *engineConstrutor = new Engine(pGuitarString, pStep, pDir);

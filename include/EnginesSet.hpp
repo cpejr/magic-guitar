@@ -39,6 +39,12 @@ public:
     EnginesSet();
 
     /**
+     * @brief Destructor of EnginesSet
+     * Just deletes the previously allocated engines
+     */
+    ~EnginesSet();
+
+    /**
     * @brief Inserts an Engine to the EnginesSet.
     * @param pGuitarString Guitar string of the Engine.
     * @param pStep STEP pin of the Engine.
