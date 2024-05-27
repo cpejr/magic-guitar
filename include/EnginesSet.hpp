@@ -17,6 +17,9 @@
 #include <string>
 #include <Arduino.h>
 
+#define DELAY_SPEED 1800
+#define STEP_NUMBER 13
+
 class EnginesSet
 {
 public:
@@ -34,6 +37,12 @@ public:
     * @brief Contructor of an EnginesSet.
     */
     EnginesSet();
+
+    /**
+     * @brief Destructor of EnginesSet
+     * Just deletes the previously allocated engines
+     */
+    ~EnginesSet();
 
     /**
     * @brief Inserts an Engine to the EnginesSet.
@@ -108,6 +117,11 @@ public:
     */
     void setDelay(); //determina e retorna o delay entre um pulso e outro
 
+    /**
+    * @brief Set the mLastMillis variable to current reading of millis()
+    */
+    void setLastMillis();
+  
     void setCurrentTarget(String pcurrentTargets);
 
     /**
@@ -155,12 +169,17 @@ private:
     /**
     * @brief Delay in miliseconds.
     */
-    int mDelayMilis;
+    uint32_t mDelayMillis;
 
     /**
     * @brief Delay in microseconds.
     */
-    int mDelayMicro;
+    uint32_t mDelayMicro;
+
+    /**
+    * @brief millis() reading on last stroke.
+    */
+    unsigned long mLastMillis;
 };
 
 #endif
