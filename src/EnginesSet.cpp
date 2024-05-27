@@ -389,6 +389,16 @@ void EnginesSet::setLastMillis()
   mLastMillis = millis();
 }
 
+void EnginesSet::standardBeat()
+{
+  for (auto it = this->mEngines.begin(); it != this->mEngines.end(); ++it)
+  {
+    this->mEnginesToPlay.push_back(*it);
+    this->playMany();
+    delay(1000);
+  }
+}
+
 void EnginesSet::setCurrentTarget(String pcurrentTargets)
 {
   char inputChars[pcurrentTargets.length() + 1];

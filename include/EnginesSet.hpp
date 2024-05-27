@@ -122,6 +122,12 @@ public:
     */
     void setLastMillis();
   
+    /**
+     * @brief Plays each string one time with a 1 second delay
+     * Used before a music starts so that the player can move his hand
+     */
+    void standardBeat();
+
     void setCurrentTarget(String pcurrentTargets);
 
     /**

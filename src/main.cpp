@@ -73,6 +73,10 @@ bool breakLoopFlag = false;
 void songLoop(void* parameter)
 {
   guitar.setLastMillis();
+
+  // Plays each string once before the song starts
+  guitar.standardBeat();
+
   while(1)
   {
     guitar.parseFile(defStroke, 0);  
@@ -156,6 +160,7 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
   int returnPlaying = 0;
   int playingPos = 1;
   guitar.setDelay();
+
   while (returnPlaying == 0)
   {
     readingButtons();
@@ -177,7 +182,7 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       {
         lastStroke = 1;
         breakLoopFlag = false;
-        xTaskCreatePinnedToCore(songLoop, "taskStroke", 1000, NULL, 1, NULL, 0);
+        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, NULL, 0);
         
         // taskStroke(NULL);
         
@@ -202,7 +207,7 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       {
         lastStroke = 1;
         breakLoopFlag = false;
-        xTaskCreatePinnedToCore(songLoop, "taskStroke", 1000, NULL, 1, NULL, 0);
+        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, NULL, 0);
         
         // taskStroke(NULL);
 
@@ -228,7 +233,7 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       {
         lastStroke = 1;
         breakLoopFlag = false;
-        xTaskCreatePinnedToCore(songLoop, "taskStroke", 1000, NULL, 1, NULL, 0);
+        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, NULL, 0);
 
         // taskStroke(NULL);
         
