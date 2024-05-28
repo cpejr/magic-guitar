@@ -67,15 +67,18 @@ void taskStroke(void *parameter)
 
 bool breakLoopFlag = false;
 
+// References the current songLoop. Used to delete it from outside the task
+TaskHandle_t loopHandle = NULL; 
+
 /**
  * @brief Loop that runs on another core and plays the song
  */
 void songLoop(void* parameter)
 {
-  guitar.setLastMillis();
-
   // Plays each string once before the song starts
   guitar.standardBeat();
+
+  guitar.setLastMillis();
 
   while(1)
   {
@@ -182,7 +185,7 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       {
         lastStroke = 1;
         breakLoopFlag = false;
-        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, NULL, 0);
+        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, &loopHandle, 0);
         
         // taskStroke(NULL);
         
@@ -207,7 +210,7 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       {
         lastStroke = 1;
         breakLoopFlag = false;
-        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, NULL, 0);
+        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, &loopHandle, 0);
         
         // taskStroke(NULL);
 
@@ -233,7 +236,7 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       {
         lastStroke = 1;
         breakLoopFlag = false;
-        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, NULL, 0);
+        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, &loopHandle, 0);
 
         // taskStroke(NULL);
         
@@ -321,6 +324,12 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
     }
     if (buttonSelectState == 0)
     {
+      if (loopHandle != NULL)
+      {
+        vTaskDelete(loopHandle);
+        lastStroke = 0;
+      }
+
       breakLoopFlag = true;
 
       returnPlaying = 1;
