@@ -161,9 +161,6 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
   int playingPos = 1;
   guitar.setDelay();
 
-  // Handle associated with the songLoop task. Used to delete the task when the song ends, or is halted.
-  TaskHandle_t loopHandle = NULL;
-
   while (returnPlaying == 0)
   {
     readingButtons();
@@ -185,7 +182,7 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       {
         lastStroke = 1;
         breakLoopFlag = false;
-        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, &loopHandle, 0);
+        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, NULL, 0);
         
         // taskStroke(NULL);
         
@@ -210,7 +207,7 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       {
         lastStroke = 1;
         breakLoopFlag = false;
-        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, &loopHandle, 0);
+        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, NULL, 0);
         
         // taskStroke(NULL);
 
@@ -236,7 +233,7 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
       {
         lastStroke = 1;
         breakLoopFlag = false;
-        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, &loopHandle, 0);
+        xTaskCreatePinnedToCore(songLoop, "songLoop", 1000, NULL, 1, NULL, 0);
 
         // taskStroke(NULL);
         
@@ -325,8 +322,6 @@ void strokes(string firstStroke, string secondStroke, string thirdStroke, int nS
     if (buttonSelectState == 0)
     {
       breakLoopFlag = true;
-
-      if (loopHandle != NULL) vTaskDelete(loopHandle);
 
       returnPlaying = 1;
       delay(delayButtons);
