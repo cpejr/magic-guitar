@@ -72,10 +72,10 @@ bool breakLoopFlag = false;
  */
 void songLoop(void* parameter)
 {
-  guitar.setLastMillis();
-
   // Plays each string once before the song starts
   guitar.standardBeat();
+
+  guitar.setLastMillis();
 
   while(1)
   {
