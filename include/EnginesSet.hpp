@@ -123,8 +123,8 @@ public:
     void setLastMillis();
   
     /**
-     * @brief Plays each string one time with a 1 second delay
-     * Used before a music starts so that the player can move his hand
+     * @brief Plays each string one time with a .5 second delay twice
+     * Used before a music starts so that the player can move his hand and to align the picks
      */
     void standardBeat();
 

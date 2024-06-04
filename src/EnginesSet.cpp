@@ -391,11 +391,20 @@ void EnginesSet::setLastMillis()
 
 void EnginesSet::standardBeat()
 {
+  // Passa duas vezes pelas cordas para garantir o alinhamento
+  
   for (auto it = this->mEngines.begin(); it != this->mEngines.end(); ++it)
   {
     this->mEnginesToPlay.push_back(*it);
     this->playMany();
-    delay(1000);
+    delay(500);
+  }
+
+  for (auto it = this->mEngines.begin(); it != this->mEngines.end(); ++it)
+  {
+    this->mEnginesToPlay.push_back(*it);
+    this->playMany();
+    delay(500);
   }
 }
 
