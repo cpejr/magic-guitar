@@ -11,6 +11,7 @@
 #include "SDCard.hpp"
 #include "Engine.hpp"
 #include "EnginesSet.hpp"
+#include "Joystick.hpp"
 
 using namespace std;
 
@@ -29,7 +30,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 int delayButtons = 250;
 #define buttonUp 16
 #define buttonSelect 17
-#define buttonDown 35
+#define JoystickIn 35
 
 int exitLoop = 0;
 
@@ -43,13 +44,15 @@ int buttonDownState;
 int *enginePos;
 int lastStroke = 0;
 
+Joystick Joy(JoystickIn,-1, buttonSelect);
+
 // bool haltReadingButtons = false;
 
 void readingButtons()
 {
-  buttonUpState = digitalRead(buttonUp);
-  buttonSelectState = digitalRead(buttonSelect);
-  buttonDownState = digitalRead(buttonDown);
+  buttonUpState = !(Joy.X_asButtonUp());
+  buttonSelectState = !(Joy.get_button());
+  buttonDownState = !(Joy.X_asButtonDown());
 }
 
 EnginesSet guitar;
@@ -1055,7 +1058,7 @@ void resetEngines(int *targetScreen)
 
 void setup()
 {
-  //Serial.begin(115200);
+  // Serial.begin(115200);
 
   //                    step, dir)
   guitar.insertMotor('E', 3, 21);
@@ -1066,9 +1069,9 @@ void setup()
   guitar.insertMotor('e', 22, 1 );
 
 
-  pinMode(buttonUp, INPUT_PULLUP);
-  pinMode(buttonSelect, INPUT_PULLUP);
-  pinMode(buttonDown, INPUT_PULLUP);
+  // pinMode(buttonUp, INPUT_PULLUP);
+  // pinMode(buttonSelect, INPUT_PULLUP);
+  // pinMode(JoystickIn, INPUT);
 
 
   musicNames = sdCard.getList();
