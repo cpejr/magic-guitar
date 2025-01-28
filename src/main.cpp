@@ -19,6 +19,8 @@ vector<string> musicNames;
 int musicNumber;
 int j;
 
+#define Motors_Enable 17
+
 // Variáveis do display TFT
 #define TFT_MOSI 23 //também representado por SDA
 #define TFT_SCLK 18
@@ -28,8 +30,7 @@ int j;
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 int delayButtons = 250;
-#define buttonUp 16
-#define buttonSelect 17
+#define buttonSelect 16
 #define JoystickIn 35
 
 int exitLoop = 0;
@@ -1059,15 +1060,22 @@ void resetEngines(int *targetScreen)
 void setup()
 {
   // Serial.begin(115200);
+  pinMode(Motors_Enable, OUTPUT);
+  digitalWrite(Motors_Enable, HIGH);
 
   //                    step, dir)
-  guitar.insertMotor('E', 3, 21);
-  guitar.insertMotor('A', 26, 25); 
-  guitar.insertMotor('D', 13, 12);
-  guitar.insertMotor('G', 33 , 32);
-  guitar.insertMotor('B', 14, 27);
-  guitar.insertMotor('e', 22, 1 );
-
+  guitar.insertMotor('E', 13, 12);
+  guitar.insertMotor('A', 14, 27); 
+  guitar.insertMotor('D', 33, 32);
+  guitar.insertMotor('G', 26, 25);
+  guitar.insertMotor('B', 22, 1);
+  guitar.insertMotor('e', 3, 21);
+// guitar.insertMotor('E', 26, 25);
+//   guitar.insertMotor('A', 3, 21); 
+//   guitar.insertMotor('D', 14, 27);
+//   guitar.insertMotor('G', 22, 1);
+//   guitar.insertMotor('B', 13, 12);
+//   guitar.insertMotor('e', 33, 32);
 
   // pinMode(buttonUp, INPUT_PULLUP);
   // pinMode(buttonSelect, INPUT_PULLUP);
