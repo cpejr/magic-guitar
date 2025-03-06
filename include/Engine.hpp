@@ -1,6 +1,8 @@
 #ifndef ENGINE
 #define ENGINE
 
+extern volatile bool enableSwitch;
+
 /**
  * @file Engine.hpp
  * @brief Control and store a step-enginer.

@@ -1,5 +1,7 @@
 #include "Engine.hpp"
 
+volatile bool enableSwitch = 1;
+
 Engine::Engine(char pGuitarString, int pStep, int pDir) : mGuitarString(pGuitarString), mSTEP(pStep), mDIR(pDir)
 {
   pinMode(pDir, OUTPUT);

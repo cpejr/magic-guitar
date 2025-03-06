@@ -7,6 +7,9 @@
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_ST7735.h>
 #include <esp_ipc.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "freertos/semphr.h"
 
 #include "SDCard.hpp"
 #include "Engine.hpp"
@@ -14,6 +17,9 @@
 #include "Joystick.hpp"
 
 using namespace std;
+
+SemaphoreHandle_t serialMutex;
+void enableUpdateTask(void *arg);
 
 vector<string> musicNames;
 int musicNumber;
@@ -665,6 +671,7 @@ void taskTune(void *parameter) // Tem que estar nessa posição, depois de setEn
 }
 void afinar(int *targetScreen)
 {
+  enableSwitch = 0;
   tft.fillScreen(ST7735_BLACK);
   int goBack = 0;
   tunePos = 0;
@@ -814,6 +821,7 @@ void afinar(int *targetScreen)
     }
     guitar.getEnginePos(sdCard);
   }
+  enableSwitch = 1;
  }
 
 void adjustEngine(int *resetPos)
@@ -908,6 +916,7 @@ void adjustEngine(int *resetPos)
 
 void resetEngines(int *targetScreen)
 {
+  enableSwitch = 0;
   tft.fillScreen(ST7735_BLACK);
   int goBack = 0;
   int resetPos = 0;
@@ -1055,14 +1064,16 @@ void resetEngines(int *targetScreen)
       delay(delayButtons);
     }
   }
+  enableSwitch = 1;
 }
 
 void setup()
 {
   // Serial.begin(115200);
   pinMode(Motors_Enable, OUTPUT);
-  digitalWrite(Motors_Enable, HIGH);
-
+  digitalWrite(Motors_Enable, enableSwitch);
+  serialMutex = xSemaphoreCreateMutex();
+  xTaskCreate(enableUpdateTask, "enable update", 4096, NULL, 2, NULL);
   //                    step, dir)
   guitar.insertMotor('E', 13, 12);
   guitar.insertMotor('A', 14, 27); 
@@ -1137,4 +1148,14 @@ void loop()
   }
   }
 
+}
+
+void enableUpdateTask(void *arg){
+  while(1){
+    bool tmp = enableSwitch;
+    vTaskDelay(15/portTICK_PERIOD_MS);
+    if(enableSwitch!=tmp){
+      digitalWrite(Motors_Enable,enableSwitch);
+    }
+  }
 }
