@@ -244,6 +244,7 @@ void EnginesSet::runHalfTarget(int pGuitarString)
     digitalWrite(mEngines[pGuitarString]->getDir(), LOW);
   }
 
+
   for (int i = 0; i < (mGlobalTargets/2); i++) {
     
     digitalWrite(mEngines[pGuitarString]->getStep(), LOW);
@@ -311,7 +312,8 @@ void EnginesSet::endMusic()
     {
       parseFile(stre + " ", 1);
     }
-  }  
+  }
+  enableSwitch = 1; 
 }
 
 void EnginesSet::setEngineSpeed(SDCard pSd)
@@ -392,6 +394,7 @@ void EnginesSet::setLastMillis()
 void EnginesSet::standardBeat()
 {
   // Passa duas vezes pelas cordas para garantir o alinhamento
+  enableSwitch = 0;
   
   for (auto it = this->mEngines.begin(); it != this->mEngines.end(); ++it)
   {
